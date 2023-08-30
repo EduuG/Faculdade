@@ -41,19 +41,18 @@ def cachorro_peso():
             valido = True
         else:
             valido = False
-            print("\nNão aceitamos cachorros tão grandes.\n")
-            limpar_tela == False
+            print("\nNão aceitamos cachorros tão grandes.")
+            limpar_tela = False
             sleep(3)
     except ValueError:
         valido = False
         print("\nValor inválido! Por favor, tente novamente.")
-        limpar_tela == False
+        limpar_tela = False
         sleep(3)
 
     return peso, valor_base, valido
 
 def cachorro_pelo():
-    global limpar_tela
     global valor_total
 
     pelo = ''
@@ -76,12 +75,12 @@ def cachorro_pelo():
             valido = True
         else:
             valido = False
-            print("\nTamanho de pelo inválido! Tente novamente.\n")
+            print("\nTamanho de pelo inválido! Tente novamente.")
             sleep(3)
 
     except ValueError:
         valido = False
-        print("\nValor inválido! Por favor, tente novamente.\n")
+        print("\nValor inválido! Por favor, tente novamente.")
         sleep(3)
 
     return pelo, multi, valido
@@ -157,15 +156,15 @@ def cachorro_extra():
     return extra, valido
 
 valor_total = 0
-valor_adicionais = 1
+valor_adicionais = 0
 servicos = []
 limpar_tela = True
 
 while True:
     if limpar_tela == True:
         limpar()
+        print("--- Bem-vindo ao petshop do Eduardo Guimarães dos Santos ---")
     
-    print("--- Bem-vindo ao petshop do Eduardo Guimarães dos Santos ---")
     peso, valor_base, valido = cachorro_peso()
 
     if valido == True:
@@ -178,7 +177,7 @@ while True:
 
                     if valido == True:
                         if extra == 0:
-                            print("\nTotal a pagar(R$): {:.2f} (peso: {} * pelo: {} + adicional(is): {})".format(valor_total, peso, multi, valor_adicionais))
+                            print("\nTotal a pagar(R$): {:.2f} (peso: {} * pelo: {} + adicional(is): {})".format(valor_total, valor_base, multi, valor_adicionais))
                             break
                     else:
                         continue
