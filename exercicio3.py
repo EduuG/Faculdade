@@ -12,6 +12,12 @@ def limpar():
     else:
         system('clear')
 
+# Função apenas para estilizar a apresentação
+def realce(nome): 
+    print("{}{}{}".format('+', '-' * (len(nome) + 2), '+'))
+    print("{}{}{}".format('| ', nome, ' |'))
+    print("{}{}{}".format('+', '-' * (len(nome) + 2), '+'))
+
 # Função para perguntar o peso do cachorro e valida-la
 def cachorro_peso():
     global limpar_tela
@@ -44,12 +50,12 @@ def cachorro_peso():
             valido = True
         else:
             valido = False
-            print("\nNão aceitamos cachorros tão grandes.")
+            print("\n-- Não aceitamos cachorros tão grandes. --")
             limpar_tela = False
             sleep(3)
     except ValueError:
         valido = False
-        print("\nValor inválido! Por favor, tente novamente.")
+        print("\n-- Valor inválido! Por favor, tente novamente. --")
         limpar_tela = False
         sleep(3)
 
@@ -81,12 +87,12 @@ def cachorro_pelo():
             valido = True
         else:
             valido = False
-            print("\nTamanho de pelo inválido! Tente novamente.")
+            print("\n-- Tamanho de pelo inválido! Tente novamente. --")
             sleep(3)
 
     except ValueError:
         valido = False
-        print("\nValor inválido! Por favor, tente novamente.")
+        print("\n-- Valor inválido! Por favor, tente novamente. --")
         sleep(3)
 
     return pelo, multi, valido
@@ -101,7 +107,7 @@ def cachorro_extra():
     valido = False
     extra = 0
 
-    print("\n- Deseja adicionar mais algum serviço? -\n")
+    print("\n- Deseja adicionar mais algum serviço? -")
     print("1 - Corte de unhas - R$ 10,00")
     print("2 - Escovar dentes - R$ 12,00")
     print("3 - Limpeza de orelhas - R$ 15,00")
@@ -122,7 +128,7 @@ def cachorro_extra():
                 valido = True
             else:
                 valido = False
-                print("\nEste serviço já foi selecionado!")
+                print("\n-- Este serviço já foi selecionado! --")
                 sleep(3)
 
         elif extra == 2:
@@ -135,7 +141,7 @@ def cachorro_extra():
                 valido = True
             else:
                 valido = False
-                print("\nEste serviço já foi selecionado!")
+                print("\n-- Este serviço já foi selecionado! --")
                 sleep(3)
 
         elif extra == 3:
@@ -148,7 +154,7 @@ def cachorro_extra():
                 valido = True
             else:
                 valido = False
-                print("\nEste serviço já foi selecionado!")
+                print("\n-- Este serviço já foi selecionado! --")
                 sleep(3)
 
         elif extra == 0:
@@ -156,12 +162,12 @@ def cachorro_extra():
             valido = True
         else:
             valido = False
-            print("\nValor inválido! Por favor, tente novamente.")
+            print("\n-- Valor inválido! Por favor, tente novamente. --")
             sleep(3)
     
     except ValueError:
         valido = False
-        print("\nValor inválido! Por favor, tente novamente.")
+        print("\n-- Valor inválido! Por favor, tente novamente. --")
         sleep(3)
 
     return extra, valido
@@ -184,7 +190,7 @@ limpar_tela = True
 while True:
     if limpar_tela == True:
         limpar()
-        print("--- Bem-vindo ao petshop do Eduardo Guimarães dos Santos ---")
+        realce("Bem-vindo ao petshop do Eduardo Guimarães dos Santos")
     
     peso, valor_base, valido = cachorro_peso()
 
