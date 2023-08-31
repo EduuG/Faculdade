@@ -66,7 +66,7 @@ def cadastrar_colaborador(id):
     lista_colaboradores.append(dicionario)
 
     print("\nColaborador cadastrado com sucesso!")
-    sleep(3)
+    #sleep(3)
 
 def consultar_colaborador():
     global limpar_tela
@@ -104,11 +104,18 @@ def consultar_colaborador():
             sleep(3)
 
 def remover_colaborador():
-    remover = int(input("Digite o ID do colaborador a ser removido: "))
-    for colaborador in lista_colaboradores:
-        for key, value in colaborador.items():
-            print(key, value)
-            sleep(4234)
+    while True:
+        remover = int(input("Digite o ID do colaborador a ser removido: "))
+        for colaborador in lista_colaboradores:
+            if remover in colaborador["id"].items():
+                print("Colaborador {} removido com sucesso!".format(colaborador["nome"]))
+                if colaborador["id"] > remover:
+                    colaborador["id"] -= 1
+                lista_colaboradores.pop(remover - 1)
+                break
+            else:
+                print("contrei n")
+        break
             
 
 limpar_tela = True
