@@ -12,78 +12,103 @@ def limpar():
     else:
         system('clear')
 
-# Função apenas para estilizar a apresentação
-def realce(tipo, titulo = '', tamanho = 0): 
-    tamanho_linha = 43
+def realce(titulo): 
+    print("{}{}{}".format('+', '-' * (len(titulo) + 2), '+'))
+    print("{}{}{}".format('| ', titulo, ' |'))
+    print("{}{}{}".format('+', '-' * (len(titulo) + 2), '+'))
 
-    if tipo == 1:
-        print("{}{}{}".format('+', '-' * (len(titulo) + 2), '+'))
-        print("{}{}{}".format('| ', titulo, ' |'))
-        print("{}{}{}".format('+', '-' * (len(titulo) + 2), '+'))
+def separador(titulo = ''):
+    global separador_tamanho
 
-    elif tipo == 2:
-        tamanho_nome = len(titulo)
-        metade_nome = tamanho_nome // 2
-        linha = '-' * (tamanho_linha - tamanho_nome)
-        print("{} {} {}".format(linha, titulo, linha))
+    if titulo:
+        titulo = ("{}{}{}".format(' ', titulo, ' '))
+        titulo_original = titulo
 
-    elif tipo == 3:
-        print('-' * tamanho_linha)
+        i = 0
+        while len(titulo) < separador_tamanho:
+            titulo = ("{}{}{}".format('-' * i, titulo_original, '-' * i))
+            i += 1
 
+        if len(titulo) == (separador_tamanho + 1):
+            titulo = titulo[:-1]
+
+        print(titulo)
+    else:
+        print('-' * separador_tamanho)
 
 def cadastrar_colaborador(id):
     global lista_colaboradores
+    global separador
 
-    nome = input("Por favor, entre com o nome: ")
+    separador("MENU CADASTRAR COLABORADOR")
+    nome = input("Por favor, entre com o nome: ").title()
     setor = input("Por favor, entre com o setor: ")
-    pagamento = int(input("Por favor, entre com o pagamento (R$): "))
+    salario = int(input("Por favor, entre com o pagamento (R$): "))
 
-    dicionario = {"id": id, "nome": nome, "setor": setor, "pagamento": pagamento}
+    dicionario = {"id": id, "nome": nome, "setor": setor, "salario": salario}
 
     lista_colaboradores.append(dicionario)
 
 def consultar_colaborador():
-    print("1 - Consultar Todos")
-    print("2 - Consultar por Id")
-    print("3 - Consultar por Setor")
-    print("4 - Retornar ao menu")
+    global limpar_tela
+    global separador
 
-    resposta = int(input("\nR: "))
-    
-    if resposta == 1: # consultar todos
-        for colaborador in lista_colaboradores:
-            for dados in colaborador:
-                print(dados)
-       
-    elif resposta == 2: # consultar por id
-        return 0
-    elif resposta == 3: # consultar por setor
-        return 0
-    elif resposta == 4: # retornar ao menu
-        return 0
+    while True:
+        separador("MENU CONSULTAR COLABORADOR")
+        print("1 - Consultar Todos")
+        print("2 - Consultar por Id")
+        print("3 - Consultar por Setor")
+        print("4 - Retornar ao menu")
+        separador()
+
+        resposta = int(input("R: "))
+        
+        if resposta == 1: # consultar todos
+            limpar_tela = False
+
+            for colaborador in lista_colaboradores:
+                for key, value in colaborador.items():
+                    print("{}: {}".format(key.title(), value))
+
+            continue
+        
+        elif resposta == 2: # consultar por id
+            return 0
+        elif resposta == 3: # consultar por setor
+            return 0
+        elif resposta == 4: # retornar ao menu
+            return 0
+        else:
+            print("\nOpção inválida! Tente novamente.")
+            sleep(3)
+
+def remover_colaborador():
+    resposta = int(input(""))
 
 limpar_tela = True
+
 id_global = 0
 lista_colaboradores = []
-tamanho_linha = 0
+
+separador_tamanho = 74
 
 while True:
     if limpar_tela == True:
         limpar()
-        tamanho_linha = realce(1, "Bem-vindo ao controle de Colaboradores do Eduardo Guimarães dos Santos")
-        realce(2, "MENU PRINCIPAL", tamanho_linha)
-        print("Escolha a opção desejada:")
+        realce("Bem-vindo ao controle de Colaboradores do Eduardo Guimarães dos Santos")
+        separador("MENU PRINCIPAL")
+        print("Escolha a opção desejada:\n")
         print("1 - Cadastrar Colaborador")
         print("2 - Consultar Colaborador(res)")
         print("3 - Remover Colaborador")
         print("4 - Sair")
-        realce(3)
+        separador()
 
         try:
-            option = int(input("\nR: "))
+            option = int(input("R: "))
 
             if option == 1:
-                cadastrar_colaborador()
+                cadastrar_colaborador(id_global + 1)
 
             elif option == 2:
                 consultar_colaborador()
@@ -92,6 +117,8 @@ while True:
                 remover_colaborador()
 
             elif option == 4:
+                print("\nAté mais!")
+                sleep(3)
                 break
 
             else:
