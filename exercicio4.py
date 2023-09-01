@@ -17,7 +17,7 @@ def realce(titulo):
     print("{}{}{}".format('| ', titulo, ' |'))
     print("{}{}{}".format('+', '-' * (len(titulo) + 2), '+'))
 
-def separador(titulo = '', limite = 0):
+def separador(titulo = '', limite = 0, tipo = 0):
     global separador_tamanho
 
     if titulo:
@@ -42,12 +42,27 @@ def separador(titulo = '', limite = 0):
             if len(titulo) == (limite + 1):
                 titulo = titulo[:-1]
 
-        print(titulo)
+        print_delay(titulo)
     else:
-        if not limite:
-            print('-' * separador_tamanho)
-        else:
-            print('-' * limite)
+        if not tipo:
+            if not limite:
+                print_delay('-' * separador_tamanho)
+            else:
+                print_delay('-' * limite)
+        elif tipo == 1:
+            if not limite:
+                print_delay('+' * separador_tamanho)
+            else:
+                print_delay('+' * limite)
+
+
+def print_delay(exibir, tempo = 0):
+    if tempo:
+       print(exibir) 
+       sleep(tempo)
+    else:
+        print(exibir)
+        sleep(tempo_delay)
 
 def cadastrar_colaborador(id):
     global lista_colaboradores
@@ -56,6 +71,7 @@ def cadastrar_colaborador(id):
 
     limpar_tela = False
 
+    print_delay("")
     separador("MENU CADASTRAR COLABORADOR")
     nome = input("Por favor, entre com o nome: ").title()
     setor = input("Por favor, entre com o setor: ")
@@ -65,56 +81,76 @@ def cadastrar_colaborador(id):
 
     lista_colaboradores.append(dicionario)
 
-    print("\nColaborador cadastrado com sucesso!")
-    #sleep(3)
+    print_delay("\nColaborador cadastrado com sucesso!")
+    sleep(3)
 
 def consultar_colaborador():
     global limpar_tela
     global separador
 
     while True:
+        print_delay("")
         separador("MENU CONSULTAR COLABORADOR")
-        print("1 - Consultar Todos")
-        print("2 - Consultar por Id")
-        print("3 - Consultar por Setor")
-        print("4 - Retornar ao menu")
-        separador()
+        print_delay("1 - Consultar Todos")
+        print_delay("2 - Consultar por Id")
+        print_delay("3 - Consultar por Setor")
+        print_delay("4 - Retornar ao menu")
 
-        resposta = int(input("R: "))
+        resposta = int(input("\nR: "))
         
         if resposta == 1: # consultar todos
             limpar_tela = False
 
-            for colaborador in lista_colaboradores:
-                print("")
-                for key, value in colaborador.items():
-                    print("{}: {}".format(key.title(), value))
+            print("")
+            separador(limite = 25, tipo = 1)
+            if lista_colaboradores:
+                for colaborador in lista_colaboradores:
+                    for key, value in colaborador.items():
+                        print_delay("{}: {}".format(key.title(), value))
+                    if colaborador != lista_colaboradores[-1]:
+                        print_delay("")
+            else:
+                print("Nenhum colaborador cadastrado!")
 
-            separador(limite = 25)
+            separador(limite = 25, tipo = 1)
             continue
         
         elif resposta == 2: # consultar por id
             return 0
         elif resposta == 3: # consultar por setor
-            return 0
+            limpar_tela = False
+
+            setor = input("Informe o setor: ")
+            for colaborador in lista_colaboradores:
+                for key, value in colaborador.items():
+                    if setor == colaborador["setor"]:
+                        print_delay("{}: {}".format(key.title()), value)
+
+                    
         elif resposta == 4: # retornar ao menu
             return 0
         else:
-            print("\nOpção inválida! Tente novamente.")
+            print_delay("\nOpção inválida! Tente novamente.")
             sleep(3)
 
 def remover_colaborador():
+    global lista_colaboradores
+
     while True:
+        print_delay("")
+        separador("MENU REMOVER COLABORADOR")
         remover = int(input("Digite o ID do colaborador a ser removido: "))
-        for colaborador in lista_colaboradores:
-            if remover in colaborador["id"].items():
-                print("Colaborador {} removido com sucesso!".format(colaborador["nome"]))
-                if colaborador["id"] > remover:
-                    colaborador["id"] -= 1
-                lista_colaboradores.pop(remover - 1)
-                break
-            else:
-                print("contrei n")
+        remover -= 1
+        if remover >= 0 and remover < len(lista_colaboradores):
+            for colaborador in lista_colaboradores:
+                if colaborador["id"] == remover:
+                    print("Colaborador {} removido com sucesso!".format(colaborador["nome"]))
+            lista_colaboradores.pop(remover)
+            break
+        else:
+            print_delay("\nID desconhecido!")
+            sleep(3)
+            break
         break
             
 
@@ -124,21 +160,25 @@ id_global = 0
 lista_colaboradores = []
 
 separador_tamanho = 74
+tempo_delay = 0.1
 
 while True:
     if limpar_tela == True:
         limpar()
+        sleep(tempo_delay)
         realce("Bem-vindo ao controle de Colaboradores do Eduardo Guimarães dos Santos")
+    else:
+        print_delay("")
+    sleep(tempo_delay)
     separador("MENU PRINCIPAL")
-    print("Escolha a opção desejada:\n")
-    print("1 - Cadastrar Colaborador")
-    print("2 - Consultar Colaborador(res)")
-    print("3 - Remover Colaborador")
-    print("4 - Sair")
-    separador()
+    print_delay("Escolha a opção desejada:\n")
+    print_delay("1 - Cadastrar Colaborador")
+    print_delay("2 - Consultar Colaborador(res)")
+    print_delay("3 - Remover Colaborador")
+    print_delay("4 - Sair")
 
     try:
-        option = int(input("R: "))
+        option = int(input("\nR: "))
 
         if option == 1:
             id_global += 1
@@ -161,5 +201,5 @@ while True:
             continue
     
     except ValueError:
-        print("Opção inválida! Por favor, tente novamente.")
+        print("\nOpção inválida! Por favor, tente novamente.")
         sleep(3)
