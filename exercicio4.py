@@ -12,20 +12,23 @@ def limpar():
     else:
         system('clear')
 
+# Função para realçar a apresentação do programa
 def realce(titulo): 
     print("{}{}{}".format('+', '-' * (len(titulo) + 2), '+'))
     print("{}{}{}".format('| ', titulo, ' |'))
     print("{}{}{}".format('+', '-' * (len(titulo) + 2), '+'))
 
+# Função que permite criar separadores de maneira dinâmica, alterando seu tamanho,
+# se deve conter um título ou não, e também sua aparência (se usará "-" ou "+").
 def separador(titulo = '', limite = 0, tipo = 0):
-    global separador_tamanho
-
     if titulo:
         titulo = ("{}{}{}".format(' ', titulo, ' '))
         titulo_original = titulo
 
-        if not limite:
-            i = 0
+        # Se o parâmetro "limite" não for informado, ele usará o tamanho padrão armazenado
+        # na variável "separador_tamanho".
+        if not limite: 
+            i = 0      
             while len(titulo) < separador_tamanho:
                 titulo = ("{}{}{}".format('-' * i, titulo_original, '-' * i))
                 i += 1
@@ -33,6 +36,7 @@ def separador(titulo = '', limite = 0, tipo = 0):
             if len(titulo) == (separador_tamanho + 1):
                 titulo = titulo[:-1]
 
+        # Se não, usará o tamanho informado no parâmetro.
         else:
             i = 0
             while len(titulo) < limite:
@@ -44,6 +48,7 @@ def separador(titulo = '', limite = 0, tipo = 0):
 
         print_delay(titulo)
     else:
+        # Se o tipo não for informado, ele usará a aparência padrão de "-".
         if not tipo:
             if not limite:
                 print_delay('-' * separador_tamanho)
@@ -56,6 +61,8 @@ def separador(titulo = '', limite = 0, tipo = 0):
                 print_delay('+' * limite)
 
 
+# Função para tornar a exibição do programa menos abrupta. Ele utiliza da variável
+# "tempo_delay" para determinar a velocidade em que os textos serão exibidos.
 def print_delay(exibir, tempo = 0):
     if tempo:
        print(exibir) 
@@ -64,10 +71,10 @@ def print_delay(exibir, tempo = 0):
         print(exibir)
         sleep(tempo_delay)
 
+# Função para cadastrar o colaborador. Como parâmetro, ele recebe a id do colaborador,
+# que é definida de maneira automática pela variável "id_global".
 def cadastrar_colaborador(id):
-    global lista_colaboradores
     global limpar_tela
-    global separador
 
     limpar_tela = False
 
@@ -75,18 +82,21 @@ def cadastrar_colaborador(id):
     separador("MENU CADASTRAR COLABORADOR")
     nome = input("Por favor, entre com o nome: ").title()
     setor = input("Por favor, entre com o setor: ")
-    salario = int(input("Por favor, entre com o pagamento (R$): "))
+    salario = float(input("Por favor, entre com o pagamento (R$): "))
 
     dicionario = {"id": id, "nome": nome, "setor": setor, "salario": salario}
 
-    lista_colaboradores.append(dicionario)
+    lista_colaboradores.append(dicionario) # Envia o dicionário para a lista.
 
     print_delay("\n- Colaborador cadastrado com sucesso! -")
     sleep(3)
 
+# Função para consultar colaborador(es), seja de todos eles, através de um ID específico
+# ou de um setor inteiro.
 def consultar_colaborador():
     global limpar_tela
-    global separador
+
+    limpar_tela = False
 
     while True:
         print_delay("")
@@ -99,16 +109,20 @@ def consultar_colaborador():
         resposta = int(input("\nR: "))
         
         if resposta == 1: # consultar todos
-            limpar_tela = False
-
             print_delay("")
             separador(limite = 25, tipo = 1)
+
+            # Se houver colaboradores registrados:
             if lista_colaboradores:
                 for colaborador in lista_colaboradores:
                     for key, value in colaborador.items():
                         print_delay("{}: {}".format(key.title(), value))
-                    if colaborador != lista_colaboradores[-1]:
+
+                    # Não pulará uma linha caso seja o último colaborador exibido, apenas para fins de estética.
+                    if colaborador != lista_colaboradores[-1]: 
                         print_delay("")
+
+            # Se não houver colaboradores registrados:
             else:
                 print_delay("Nenhum colaborador cadastrado!")
 
@@ -118,6 +132,8 @@ def consultar_colaborador():
         elif resposta == 2: # consultar por id
             print_delay("")
             separador()
+
+            # Variável para definir se o ID informado foi validado ou não.
             id_valido = False
 
             consultar_id = int(input("Digite o ID do colaborador: "))
@@ -130,6 +146,7 @@ def consultar_colaborador():
                         print_delay("{}: {}".format(key.title(), value))
                         id_valido = True
 
+            # Se o ID não for validado, uma mensagem será exibida.
             if id_valido == False:
                 print_delay("- ID inexistente! -")
 
@@ -138,6 +155,8 @@ def consultar_colaborador():
         elif resposta == 3: # consultar por setor
             print_delay("")
             separador()
+
+            # Variável para definir se o setor informado foi validado ou não.
             setor_valido = False
 
             setor = input("Informe o setor: ")
@@ -153,7 +172,7 @@ def consultar_colaborador():
                     if colaborador != lista_colaboradores[-1]:
                         print_delay("")
 
-
+            # Se o setor não for validado, uma mensagem será exibida.
             if setor_valido == False:
                 print_delay("- Setor inexistente! -")
 
@@ -166,6 +185,7 @@ def consultar_colaborador():
             print_delay("\nOpção inválida! Tente novamente.")
             sleep(3)
 
+# Função para remover colaborador informando sua ID.
 def remover_colaborador():
     while True:
         print_delay("")
@@ -186,14 +206,23 @@ def remover_colaborador():
         break
             
 
+# Variável para definir se a tela será limpada ou não. Está só será verdadeira
+# na primeira execução do programa.
 limpar_tela = True
 
+# Essa variável será incrementada em 1 sempre que um novo colaborador for cadastrado.
 id_global = 0
+
+# Lista dos colaboradores, contendo dicionários que armazenam os dados de cada um deles (id, nome, setor, salário).
 lista_colaboradores = []
 
+# Variável para definir o tamanho dos separadores.
 separador_tamanho = 74
+
+# Variável para definir o delay da exibição.
 tempo_delay = 0.1
 
+# Programa principal.
 while True:
     if limpar_tela == True:
         limpar()
@@ -207,13 +236,13 @@ while True:
     print_delay("1 - Cadastrar Colaborador")
     print_delay("2 - Consultar Colaborador(res)")
     print_delay("3 - Remover Colaborador")
-    print_delay("4 - Sair")
+    print_delay("4 - Encerrar programa")
 
     try:
         option = int(input("\nR: "))
 
         if option == 1:
-            id_global += 1
+            id_global += 1 # Incrementa em um, como dito anteriormente.
             cadastrar_colaborador(id_global)
 
         elif option == 2:
