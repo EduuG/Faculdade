@@ -81,7 +81,7 @@ def cadastrar_colaborador(id):
 
     lista_colaboradores.append(dicionario)
 
-    print_delay("\nColaborador cadastrado com sucesso!")
+    print_delay("\n- Colaborador cadastrado com sucesso! -")
     sleep(3)
 
 def consultar_colaborador():
@@ -101,7 +101,7 @@ def consultar_colaborador():
         if resposta == 1: # consultar todos
             limpar_tela = False
 
-            print("")
+            print_delay("")
             separador(limite = 25, tipo = 1)
             if lista_colaboradores:
                 for colaborador in lista_colaboradores:
@@ -110,47 +110,79 @@ def consultar_colaborador():
                     if colaborador != lista_colaboradores[-1]:
                         print_delay("")
             else:
-                print("Nenhum colaborador cadastrado!")
+                print_delay("Nenhum colaborador cadastrado!")
 
             separador(limite = 25, tipo = 1)
             continue
         
         elif resposta == 2: # consultar por id
-            return 0
+            print_delay("")
+            separador()
+            id_valido = False
+
+            consultar_id = int(input("Digite o ID do colaborador: "))
+            print_delay("")
+
+            separador(limite = 25, tipo = 1)
+            for colaborador in lista_colaboradores:
+                if consultar_id == colaborador["id"]:
+                    for key, value in colaborador.items():
+                        print_delay("{}: {}".format(key.title(), value))
+                        id_valido = True
+
+            if id_valido == False:
+                print_delay("- ID inexistente! -")
+
+            separador(limite = 25, tipo = 1)
+
         elif resposta == 3: # consultar por setor
-            limpar_tela = False
+            print_delay("")
+            separador()
+            setor_valido = False
 
             setor = input("Informe o setor: ")
-            for colaborador in lista_colaboradores:
-                for key, value in colaborador.items():
-                    if setor == colaborador["setor"]:
-                        print_delay("{}: {}".format(key.title()), value)
+            print_delay("")
 
+            separador(limite = 25, tipo = 1)
+            for colaborador in lista_colaboradores:
+                if setor == colaborador["setor"]:
+                    for key, value in colaborador.items():
+                        print_delay("{}: {}".format(key.title(), value))
+                        setor_valido = True
+
+                    if colaborador != lista_colaboradores[-1]:
+                        print_delay("")
+
+
+            if setor_valido == False:
+                print_delay("- Setor inexistente! -")
+
+            separador(limite = 25, tipo = 1)
                     
         elif resposta == 4: # retornar ao menu
             return 0
+
         else:
             print_delay("\nOpção inválida! Tente novamente.")
             sleep(3)
 
 def remover_colaborador():
-    global lista_colaboradores
-
     while True:
         print_delay("")
         separador("MENU REMOVER COLABORADOR")
         remover = int(input("Digite o ID do colaborador a ser removido: "))
-        remover -= 1
-        if remover >= 0 and remover < len(lista_colaboradores):
-            for colaborador in lista_colaboradores:
-                if colaborador["id"] == remover:
-                    print("Colaborador {} removido com sucesso!".format(colaborador["nome"]))
-            lista_colaboradores.pop(remover)
-            break
-        else:
-            print_delay("\nID desconhecido!")
+
+        id_valido = False
+
+        for colaborador in lista_colaboradores:
+            if remover == colaborador["id"]:
+                print_delay("\n- Colaborador {} removido com sucesso -".format(colaborador["nome"]))
+                sleep(3)
+                lista_colaboradores.remove(colaborador)
+                id_valido = True
+        if id_valido == False:
+            print("\n- ID inexistente! -")
             sleep(3)
-            break
         break
             
 
@@ -191,15 +223,15 @@ while True:
             remover_colaborador()
 
         elif option == 4:
-            print("\nAté mais!")
+            print("\n- Até mais! -")
             sleep(3)
             break
 
         else:
-            print("\nOpção inválida! Por favor, tente novamente.")
+            print("\n- Opção inválida! Por favor, tente novamente. -")
             sleep(3)
             continue
     
     except ValueError:
-        print("\nOpção inválida! Por favor, tente novamente.")
+        print("\n- Opção inválida! Por favor, tente novamente. -")
         sleep(3)
